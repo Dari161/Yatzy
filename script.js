@@ -8,7 +8,8 @@ function roll() {
 const rollBtn = document.getElementById('roll');
 const scoreSpan = document.getElementById('score');
 const rollsLeftSpan = document.getElementById('rollsLeft');
-const handDice = Array.from(document.getElementById('hand').children);
+//const handDice = Array.from(document.getElementById('hand').children);
+const handDice = Array.from(document.querySelectorAll('#hand button'));
 let parsedHandDice = handDice.map(die => parseInt(die.innerText));
 const rollsAllowed = 3;
 
@@ -19,6 +20,7 @@ for (let i = 0; i < place6.length; ++i) {
 
 const ofAKind3 = document.getElementById('3x');
 const ofAKind4 = document.getElementById('4x');
+const ofAKind5 = document.getElementById('5x');
 
 const fullHouse = document.getElementById('fullHouse');
 
@@ -29,48 +31,39 @@ rollsLeftSpan.innerText = rollsLeft;
 
 let score = 0;
 
-let canClick = true;
+let canPlace = false;
 
 handDice.forEach(die => {
     die.addEventListener('click', () => {
-        if (canClick) {
+        if (canPlace) {
             die.dataset.locked = !(die.dataset.locked === 'true');
         }
     });
 });
 
-function sum() {
-    let ret = 0;
-    handDice.forEach(die => {
-        ret += parseInt(die.innerText);
-    });
-    return ret;
-}
-
-const addScoreOnClick = (element) => {
+[...place6, ofAKind3, ofAKind4, ofAKind5, fullHouse, largeStraight].forEach(element => {
     element.addEventListener('click', () => {
-        if (element.innerText != '') {
+        if (canPlace) {
             score += parseInt(element.innerText);
+            element.dataset.placable = 'placed';
             rollsLeft = rollsAllowed;
             rollsLeftSpan.innerText = rollsLeft;
             rollBtn.disabled = false;
             scoreSpan.innerText = score;
             handDice.forEach(die => {
-                die.innerText = '';
+                die.innerHtml = '';
                 die.dataset.locked = 'false';
             });
-            place6.forEach(p => {
-                p.innerText = '';
-            });
-            [ofAKind3, ofAKind4, fullHouse, largeStraight].forEach(p => {
-                p.innerText = '';
+            [...place6, ofAKind3, ofAKind4, ofAKind5, fullHouse, largeStraight].forEach(p => {
+                if (p.dataset.placable != 'placed') {
+                    p.innerHtml = '';
+                    p.dataset.placable = 'false';
+                }
             });
         }
+        canPlace = false;
     });
-};
-
-place6.forEach(p => addScoreOnClick(p));
-[ofAKind3, ofAKind4, fullHouse, largeStraight].forEach(addScoreOnClick);
+});
 
 rollBtn.addEventListener('click', () => {
     if(rollsLeft > 0) {
@@ -104,15 +97,23 @@ rollBtn.addEventListener('click', () => {
 
         let ofAKind3Int = 0;
         let ofAKind4Int = 0;
+        let ofAKind5Int = 0;
         
         let kind3 = false;
         let kind2 = false;
+        let sum = 0;
+        parsedHandDice.forEach(die => {
+            sum += die;
+        });
         for (let i = 0; i < kinds.length; ++i) {
             if (kinds[i] >= 3) {
-                ofAKind3Int = sum();
+                ofAKind3Int = sum;
                 if (kinds[i] >= 4) {
-                    ofAKind4Int = sum();
-                    break;
+                    ofAKind4Int = sum;
+                    if (kinds[i] >= 5) {
+                        ofAKind5Int = sum;
+                        break;
+                    }
                 }
             }
 
@@ -126,8 +127,9 @@ rollBtn.addEventListener('click', () => {
 
         ofAKind3.innerText = ofAKind3Int;
         ofAKind4.innerText = ofAKind4Int;
+        ofAKind5.innerText = ofAKind5Int;
 
-        if (kind3 && kind2) { // Does 5 of a kind counts as fullHouse???
+        if (kind3 && kind2) { // Does 5 of a kind counts as fullHouse??? NO.
             fullHouse.innerText = 25;
         } else {
             fullHouse.innerText = 0;
@@ -145,6 +147,13 @@ rollBtn.addEventListener('click', () => {
         } else {
             largeStraight.innerText = 0;
         }
+
+        [...place6, ofAKind3, ofAKind4, ofAKind5, fullHouse, largeStraight].forEach(p => {
+            if (p.dataset.placable != 'placed') {
+                p.dataset.placable = 'true';
+            }
+        });
+        canPlace = true;
 
         if(rollsLeft < 1) {
             rollBtn.disabled = true;

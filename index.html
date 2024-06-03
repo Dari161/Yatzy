@@ -9,88 +9,65 @@
 </head>
 <body>
     <div id="container">
-        <table>
-            <tr>
-                <td>1</td>
-                <td>
-                    <button id="1"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>
-                    <button id="2"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>
-                    <button id="3"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>
-                    <button id="4"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>
-                    <button id="5"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>
-                    <button id="6"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>3x</td>
-                <td>
-                    <button id="3x"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>4x</td>
-                <td>
-                    <button id="4x"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>Full house</td>
-                <td>
-                    <button id="fullHouse"></button>
-                </td>
-            </tr>
-            <tr>
-                <td>large straight</td>
-                <td>
-                    <button id="largeStraight"></button>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-        <p>rolls left: <span id="rollsLeft"></span></p>
-        <button id="roll">roll</button>
-        <p>score: <span id="score">0</span></p>
-        <table>
-            <tr id="hand">
-                <td data-locked="false"></td>
-                <td data-locked="false"></td>
-                <td data-locked="false"></td>
-                <td data-locked="false"></td>
-                <td data-locked="false"></td>
-            </tr>
-        </table>
+        <div id="container-inner">
+            <table id="gameTable">
+                <tr>
+                    <td>1</td>
+                    <td><button data-placable="false" id="1"></button></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><button data-placable="false" id="2"></button></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><button data-placable="false" id="3"></button></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><button data-placable="false" id="4"></button></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><button data-placable="false" id="5"></button></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><button data-placable="false" id="6"></button></td>
+                </tr>
+                <tr>
+                    <td>3x</td>
+                    <td><button data-placable="false" id="3x"></button></td>
+                </tr>
+                <tr>
+                    <td>4x</td>
+                    <td><button data-placable="false" id="4x"></button></td>
+                </tr>
+                <tr>
+                    <td>Full house</td>
+                    <td><button data-placable="false" id="fullHouse"></button></td>
+                </tr>
+                <tr>
+                    <td>large straight</td>
+                    <td><button data-placable="false" id="largeStraight"></button></td>
+                </tr>
+                <tr>
+                    <td>5x</td>
+                    <td><button data-placable="false" id="5x"></button></td>
+                </tr>
+            </table>
+            <button id="roll">roll (left: <span id="rollsLeft"></span>)</button>
+            <p>score: <span id="score">0</span></p>
+            <table>
+                <tr id="hand">
+                    <td><button data-locked="false"></button></td>
+                    <td><button data-locked="false"></button></td>
+                    <td><button data-locked="false"></button></td>
+                    <td><button data-locked="false"></button></td>
+                    <td><button data-locked="false"></button></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 </html>
