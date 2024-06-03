@@ -8,8 +8,7 @@ function roll() {
 const rollBtn = document.getElementById('roll');
 const scoreSpan = document.getElementById('score');
 const rollsLeftSpan = document.getElementById('rollsLeft');
-//const handDice = Array.from(document.getElementById('hand').children);
-const handDice = Array.from(document.querySelectorAll('#hand button'));
+const handDice = Array.from(document.getElementById('hand').children);
 let parsedHandDice = handDice.map(die => parseInt(die.innerText));
 const rollsAllowed = 3;
 
