@@ -9,7 +9,7 @@ const rollBtn = document.getElementById('roll');
 const scoreSpan = document.getElementById('score');
 const rollsLeftSpan = document.getElementById('rollsLeft');
 const handDice = Array.from(document.getElementById('hand').children);
-let parsedHandDice = handDice.map(die => parseInt(die.textContent));
+let parsedHandDice = handDice.map(die => parseInt(die.innerText));
 const rollsAllowed = 3;
 
 const place6 = new Array(6);
@@ -32,9 +32,9 @@ let score = 0;
 let canClick = true;
 
 handDice.forEach(die => {
-    die.addEventListener('click', function() {
+    die.addEventListener('click', () => {
         if (canClick) {
-            this.dataset.locked = !(this.dataset.locked === 'true');
+            die.dataset.locked = !(die.dataset.locked === 'true');
         }
     });
 });
@@ -47,87 +47,41 @@ function sum() {
     return ret;
 }
 
-/*place6.forEach(p => {
-    p.addEventListener('click', function() {
-        score += parseInt(p.innerText);
-    });
-});
-
-ofAKind3.addEventListener('click', function() {
-    score += parseInt(ofAKind3.innerText);
-});
-
-ofAKind4.addEventListener('click', function() {
-    score += parseInt(ofAKind4.innerText);
-});
-
-fullHouse.addEventListener('click', function() {
-    score += parseInt(fullHouse.innerText);
-});
-
-largeStraight.addEventListener('click', function() {
-    score += parseInt(largeStraight.innerText);
-});*/
-
-function place () {
-    rollsLeft = rollsAllowed;
-    rollsLeftSpan.innerText = rollsLeft;
-    rollBtn.disabled = false;
-    scoreSpan.innerText = score;
-    handDice.forEach(die => {
-        die.innerText = '';
-        die.dataset.locked = 'false';
-    });
-}
-
 const addScoreOnClick = (element) => {
-    element.addEventListener('click', function() {
-        score += parseInt(element.innerText);
-        place();
+    element.addEventListener('click', () => {
+        if (element.innerText != '') {
+            score += parseInt(element.innerText);
+            rollsLeft = rollsAllowed;
+            rollsLeftSpan.innerText = rollsLeft;
+            rollBtn.disabled = false;
+            scoreSpan.innerText = score;
+            handDice.forEach(die => {
+                die.innerText = '';
+                die.dataset.locked = 'false';
+            });
+            place6.forEach(p => {
+                p.innerText = '';
+            });
+            [ofAKind3, ofAKind4, fullHouse, largeStraight].forEach(p => {
+                p.innerText = '';
+            });
+        }
     });
 };
 
 place6.forEach(p => addScoreOnClick(p));
 [ofAKind3, ofAKind4, fullHouse, largeStraight].forEach(addScoreOnClick);
 
-
-/*document.getElementById('1').addEventListener('click', () => {
-    handDice.forEach(dice => {
-        if (dice.innerText == '1') {
-            score += 1;
-        }
-    });
-    place();
-});
-
-document.getElementById('2').addEventListener('click', () => {
-    handDice.forEach(dice => {
-        if (dice.innerText == '2') {
-            score += 2;
-        }
-    });
-    place();
-});
-
-document.getElementById('3').addEventListener('click', () => {
-    handDice.forEach(dice => {
-        if (dice.textContent == '3') {
-            score += 3;
-        }
-    });
-    place();
-});*/
-
 rollBtn.addEventListener('click', () => {
     if(rollsLeft > 0) {
         --rollsLeft;
-        rollsLeftSpan.textContent = rollsLeft;
+        rollsLeftSpan.innerText = rollsLeft;
         handDice.forEach(die => {
             if (die.dataset.locked === 'false') {
                 die.innerText = roll();
             }
         });
-        parsedHandDice = handDice.map(die => parseInt(die.textContent));
+        parsedHandDice = handDice.map(die => parseInt(die.innerText));
 
 
         // itt kéne kiírni a leendő pontokat, meg disableolni ahol 0 pontot ér (ezt mégse kell)
