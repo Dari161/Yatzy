@@ -1,0 +1,7 @@
+#hand td[data-locked="false"] {
+    background-color: rgb(145, 255, 145);
+}
+
+#hand td[data-locked="true"] {
+    background-color: rgb(0, 166, 0);
+}
