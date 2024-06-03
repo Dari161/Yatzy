@@ -42,7 +42,7 @@ handDice.forEach(die => {
 
 [...place6, ofAKind3, ofAKind4, ofAKind5, fullHouse, largeStraight].forEach(element => {
     element.addEventListener('click', () => {
-        if (canPlace) {
+        if (canPlace && element.dataset.placable === 'true') {
             score += parseInt(element.innerText);
             element.dataset.placable = 'placed';
             rollsLeft = rollsAllowed;
@@ -58,6 +58,9 @@ handDice.forEach(die => {
                     p.innerHtml = '';
                     p.dataset.placable = 'false';
                 }
+            });
+            handDice.forEach(die => {
+                die.innerText = '';
             });
         }
         canPlace = false;
@@ -80,13 +83,15 @@ rollBtn.addEventListener('click', () => {
         // és akk ott felül meg csak hozza kene adni a kiirt pontot
 
         for (let i = 0; i < place6.length; ++i) {
-            let thisScore = 0;
-            parsedHandDice.forEach(die => {
-                if (die == i + 1) {
-                    thisScore += i + 1;
-                }
-            });
-            place6[i].innerText = thisScore;
+            if (place6[i].dataset.placable != 'placed') {
+                let thisScore = 0;
+                parsedHandDice.forEach(die => {
+                    if (die == i + 1) {
+                        thisScore += i + 1;
+                    }
+                });
+                place6[i].innerText = thisScore;
+            }
         }
         
         let kinds = new Array(6).fill(0);
@@ -124,27 +129,37 @@ rollBtn.addEventListener('click', () => {
 
         }
 
-        ofAKind3.innerText = ofAKind3Int;
-        ofAKind4.innerText = ofAKind4Int;
-        ofAKind5.innerText = ofAKind5Int;
-
-        if (kind3 && kind2) { // Does 5 of a kind counts as fullHouse??? NO.
-            fullHouse.innerText = 25;
-        } else {
-            fullHouse.innerText = 0;
+        if (ofAKind3.dataset.placable != 'placed') {
+            ofAKind3.innerText = ofAKind3Int;
+        }
+        if (ofAKind4.dataset.placable != 'placed') {
+            ofAKind4.innerText = ofAKind4Int;
+        }
+        if (ofAKind4.dataset.placable != 'placed') {
+            ofAKind5.innerText = ofAKind5Int;
         }
 
-        sequence5 = true;
-        for (let i = 1; i < handDice.length; ++i) {
-            if (parsedHandDice[i-1] >= parsedHandDice[i]) {
-                sequence5 = false;
+        if (fullHouse.dataset.placable != 'placed') {
+            if (kind3 && kind2) { // Does 5 of a kind counts as fullHouse??? NO.
+                fullHouse.innerText = 25; 
+            } else {
+                fullHouse.innerText = 0;
             }
         }
 
-        if (sequence5) {
-            largeStraight.innerText = 40;
-        } else {
-            largeStraight.innerText = 0;
+        if (largeStraight.dataset.placable != 'placed') {
+            let sequence5 = true;
+            for (let i = 1; i < handDice.length; ++i) {
+                if (parsedHandDice[i-1] >= parsedHandDice[i]) {
+                    sequence5 = false;
+                }
+            }
+    
+            if (sequence5) {
+                largeStraight.innerText = 40;
+            } else {
+                largeStraight.innerText = 0;
+            }
         }
 
         [...place6, ofAKind3, ofAKind4, ofAKind5, fullHouse, largeStraight].forEach(p => {
