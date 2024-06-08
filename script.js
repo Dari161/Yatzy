@@ -10,21 +10,19 @@ const scoreSpan = document.getElementById('score');
 const rollsLeftSpan = document.getElementById('rollsLeft');
 const handDice = Array.from(document.getElementById('hand').children);
 let parsedHandDice = handDice.map(die => parseInt(die.innerText));
-const rollsAllowed = 3;
 
+// reference to score elements
 const place6 = new Array(6);
 for (let i = 0; i < place6.length; ++i) {
     place6[i] = document.getElementById(`${i+1}`);
 }
-
 const ofAKind3 = document.getElementById('3x');
 const ofAKind4 = document.getElementById('4x');
 const ofAKind5 = document.getElementById('5x');
-
 const fullHouse = document.getElementById('fullHouse');
-
 const largeStraight = document.getElementById('largeStraight');
 
+const rollsAllowed = 3;
 let rollsLeft = rollsAllowed;
 rollsLeftSpan.innerText = rollsLeft;
 
@@ -77,10 +75,6 @@ rollBtn.addEventListener('click', () => {
             }
         });
         parsedHandDice = handDice.map(die => parseInt(die.innerText));
-
-
-        // itt kéne kiírni a leendő pontokat, meg disableolni ahol 0 pontot ér (ezt mégse kell)
-        // és akk ott felül meg csak hozza kene adni a kiirt pontot
 
         for (let i = 0; i < place6.length; ++i) {
             if (place6[i].dataset.placable != 'placed') {
@@ -135,7 +129,7 @@ rollBtn.addEventListener('click', () => {
         if (ofAKind4.dataset.placable != 'placed') {
             ofAKind4.innerText = ofAKind4Int;
         }
-        if (ofAKind4.dataset.placable != 'placed') {
+        if (ofAKind5.dataset.placable != 'placed') {
             ofAKind5.innerText = ofAKind5Int;
         }
 
@@ -148,14 +142,15 @@ rollBtn.addEventListener('click', () => {
         }
 
         if (largeStraight.dataset.placable != 'placed') {
-            let sequence5 = true;
-            for (let i = 1; i < handDice.length; ++i) {
-                if (parsedHandDice[i-1] >= parsedHandDice[i]) {
-                    sequence5 = false;
+            let sequence5 = 0;
+
+            for (let i = 0; i < kinds.length; ++i) {
+                if (kinds[i] >= 1) {
+                    ++sequence5;
                 }
             }
     
-            if (sequence5) {
+            if (sequence5 >= 5) {
                 largeStraight.innerText = 40;
             } else {
                 largeStraight.innerText = 0;
