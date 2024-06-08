@@ -158,13 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update large straight score
             if (largeStraight.dataset.placable != 'placed') {
-                let sequence5 = 0;
-                for (let i = 0; i < kinds.length; ++i) {
-                    if (kinds[i] >= 1) {
-                        ++sequence5;
-                    }
-                }
-                if (sequence5 >= 5) {
+                const uniqueValues = kinds.filter(count => count >= 1).length;
+                if (uniqueValues >= 5) {
                     largeStraight.innerText = 40;
                 } else {
                     largeStraight.innerText = 0;
